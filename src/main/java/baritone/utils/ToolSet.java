@@ -109,7 +109,7 @@ public class ToolSet {
 
     /**
      * Calculate which tool on the hotbar is best for mining, depending on an overrideCost setting,
-     * related to auto tool movement cost, it will either return current selected slot, or the best slot.
+     * related to auto tool actions cost, it will either return current selected slot, or the best slot.
      *
      * @param b the blockstate to be mined
      * @return An int containing the index in the tools array that worked best

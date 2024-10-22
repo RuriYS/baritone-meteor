@@ -22,9 +22,9 @@ import baritone.api.pathing.goals.Goal;
 import baritone.api.pathing.movement.IMovement;
 import baritone.api.utils.BetterBlockPos;
 import baritone.api.utils.Helper;
-import baritone.pathing.movement.CalculationContext;
-import baritone.pathing.movement.Movement;
-import baritone.pathing.movement.Moves;
+import baritone.pathing.actions.CalculationContext;
+import baritone.pathing.actions.Movement;
+import baritone.pathing.actions.Moves;
 import baritone.pathing.path.CutoffPath;
 import baritone.utils.pathing.PathBase;
 
@@ -138,7 +138,7 @@ class Path extends PathBase {
         boolean failed = assembleMovements();
         movements.forEach(m -> m.checkLoadedChunk(context));
 
-        if (failed) { // at least one movement became impossible during calculation
+        if (failed) { // at least one actions became impossible during calculation
             CutoffPath res = new CutoffPath(this, movements().size());
             if (res.movements().size() != movements.size()) {
                 throw new IllegalStateException();

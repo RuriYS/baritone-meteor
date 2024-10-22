@@ -15,7 +15,7 @@
  * along with Baritone.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package baritone.pathing.movement.movements;
+package baritone.pathing.actions.movements;
 
 import baritone.Baritone;
 import baritone.api.IBaritone;
@@ -25,10 +25,10 @@ import baritone.api.utils.Rotation;
 import baritone.api.utils.RotationUtils;
 import baritone.api.utils.VecUtils;
 import baritone.api.utils.input.Input;
-import baritone.pathing.movement.CalculationContext;
-import baritone.pathing.movement.Movement;
-import baritone.pathing.movement.MovementHelper;
-import baritone.pathing.movement.MovementState;
+import baritone.pathing.actions.CalculationContext;
+import baritone.pathing.actions.Movement;
+import baritone.pathing.actions.MovementHelper;
+import baritone.pathing.actions.MovementState;
 import baritone.utils.BlockStateInterface;
 import com.google.common.collect.ImmutableSet;
 import net.minecraft.core.BlockPos;
@@ -47,14 +47,14 @@ import net.minecraft.world.phys.Vec3;
 import java.util.Optional;
 import java.util.Set;
 
-public class MovementTraverse extends Movement {
+public class Traverse extends Movement {
 
     /**
      * Did we have to place a bridge block or was it always there
      */
     private boolean wasTheBridgeBlockAlwaysThere = true;
 
-    public MovementTraverse(IBaritone baritone, BetterBlockPos from, BetterBlockPos to) {
+    public Traverse(IBaritone baritone, BetterBlockPos from, BetterBlockPos to) {
         super(baritone, from, to, new BetterBlockPos[]{to.above(), to}, to.below());
     }
 
@@ -246,7 +246,7 @@ public class MovementTraverse extends Movement {
         if (feet.getY() != dest.getY() && !ladder) {
             logDebug("Wrong Y coordinate");
             if (feet.getY() < dest.getY()) {
-                System.out.println("In movement traverse");
+                System.out.println("In actions traverse");
                 return state.setInput(Input.JUMP, true);
             }
             return state;
@@ -276,7 +276,7 @@ public class MovementTraverse extends Movement {
             BlockState destDown = BlockStateInterface.get(ctx, dest.below());
             BlockPos against = blocksToBreak[0];
             if (feet.getY() != dest.getY() && ladder && (destDown.getBlock() == Blocks.VINE || destDown.getBlock() == Blocks.LADDER)) {
-                against = destDown.getBlock() == Blocks.VINE ? MovementPillar.getAgainst(new CalculationContext(baritone), dest.below()) : dest.relative(destDown.getValue(LadderBlock.FACING).getOpposite());
+                against = destDown.getBlock() == Blocks.VINE ? Pillar.getAgainst(new CalculationContext(baritone), dest.below()) : dest.relative(destDown.getValue(LadderBlock.FACING).getOpposite());
                 if (against == null) {
                     logDirect("Unable to climb vines. Consider disabling allowVines.");
                     return state.setStatus(MovementStatus.UNREACHABLE);

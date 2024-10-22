@@ -15,7 +15,7 @@
  * along with Baritone.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package baritone.pathing.movement;
+package baritone.pathing.actions;
 
 import baritone.Baritone;
 import baritone.api.IBaritone;
@@ -83,7 +83,6 @@ public class CalculationContext {
     public double jumpPenalty;
     public final double walkOnWaterOnePenalty;
     public final BetterWorldBorder worldBorder;
-
     public final PrecomputedData precomputedData;
 
     public CalculationContext(IBaritone baritone) {
@@ -128,7 +127,7 @@ public class CalculationContext {
         this.allowDiagonalDescend = Baritone.settings().allowDiagonalDescend.value;
         this.allowDiagonalAscend = Baritone.settings().allowDiagonalAscend.value;
         this.allowDownward = Baritone.settings().allowDownward.value;
-        this.minFallHeight = 3; // Minimum fall height used by MovementFall
+        this.minFallHeight = 3; // Minimum fall height used by Fall
         this.maxFallHeightNoWater = Baritone.settings().maxFallHeightNoWater.value;
         this.maxFallHeightBucket = Baritone.settings().maxFallHeightBucket.value;
         float waterSpeedMultiplier = 1.0f;

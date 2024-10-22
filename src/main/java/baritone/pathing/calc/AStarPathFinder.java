@@ -23,8 +23,8 @@ import baritone.api.pathing.goals.Goal;
 import baritone.api.pathing.movement.ActionCosts;
 import baritone.api.utils.BetterBlockPos;
 import baritone.pathing.calc.openset.BinaryHeapOpenSet;
-import baritone.pathing.movement.CalculationContext;
-import baritone.pathing.movement.Moves;
+import baritone.pathing.actions.CalculationContext;
+import baritone.pathing.actions.Moves;
 import baritone.utils.pathing.BetterWorldBorder;
 import baritone.utils.pathing.Favoring;
 import baritone.utils.pathing.MutableMoveResult;
@@ -102,8 +102,8 @@ public final class AStarPathFinder extends AbstractNodeCostSearch {
                 int newX = currentNode.x + moves.xOffset;
                 int newZ = currentNode.z + moves.zOffset;
                 if ((newX >> 4 != currentNode.x >> 4 || newZ >> 4 != currentNode.z >> 4) && !calcContext.isLoaded(newX, newZ)) {
-                    // only need to check if the destination is a loaded chunk if it's in a different chunk than the start of the movement
-                    if (!moves.dynamicXZ) { // only increment the counter if the movement would have gone out of bounds guaranteed
+                    // only need to check if the destination is a loaded chunk if it's in a different chunk than the start of the actions
+                    if (!moves.dynamicXZ) { // only increment the counter if the actions would have gone out of bounds guaranteed
                         numEmptyChunk++;
                     }
                     continue;

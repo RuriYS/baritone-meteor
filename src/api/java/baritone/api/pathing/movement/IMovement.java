@@ -29,9 +29,9 @@ public interface IMovement {
     double getCost();
 
     /**
-     * Updates the movement state and handles player actions like flying, swimming, and rotation.
+     * Updates the actions state and handles player actions like flying, swimming, and rotation.
      *
-     * @return Current movement status after update
+     * @return Current actions status after update
      */
     MovementStatus update();
 
@@ -46,7 +46,7 @@ public interface IMovement {
     void resetBlockCache();
 
     /**
-     * @return Whether or not it is safe to cancel the current movement state
+     * @return Whether or not it is safe to cancel the current actions state
      */
     boolean safeToCancel();
 

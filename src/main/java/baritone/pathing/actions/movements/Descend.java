@@ -15,17 +15,17 @@
  * along with Baritone.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package baritone.pathing.movement.movements;
+package baritone.pathing.actions.movements;
 
 import baritone.api.IBaritone;
 import baritone.api.pathing.movement.MovementStatus;
 import baritone.api.utils.BetterBlockPos;
 import baritone.api.utils.RotationUtils;
 import baritone.api.utils.input.Input;
-import baritone.pathing.movement.CalculationContext;
-import baritone.pathing.movement.Movement;
-import baritone.pathing.movement.MovementHelper;
-import baritone.pathing.movement.MovementState;
+import baritone.pathing.actions.CalculationContext;
+import baritone.pathing.actions.Movement;
+import baritone.pathing.actions.MovementHelper;
+import baritone.pathing.actions.MovementState;
 import baritone.utils.BlockStateInterface;
 import baritone.utils.pathing.MutableMoveResult;
 import com.google.common.collect.ImmutableSet;
@@ -38,12 +38,12 @@ import net.minecraft.world.phys.Vec3;
 
 import java.util.Set;
 
-public class MovementDescend extends Movement {
+public class Descend extends Movement {
 
     private int numTicks = 0;
     public boolean forceSafeMode = false;
 
-    public MovementDescend(IBaritone baritone, BetterBlockPos start, BetterBlockPos end) {
+    public Descend(IBaritone baritone, BetterBlockPos start, BetterBlockPos end) {
         super(baritone, start, end, new BetterBlockPos[]{end.above(2), end.above(), end}, end.below());
     }
 
@@ -55,7 +55,7 @@ public class MovementDescend extends Movement {
     }
 
     /**
-     * Called by PathExecutor if needing safeMode can only be detected with knowledge about the next movement
+     * Called by PathExecutor if needing safeMode can only be detected with knowledge about the next actions
      */
     public void forceSafeMode() {
         forceSafeMode = true;

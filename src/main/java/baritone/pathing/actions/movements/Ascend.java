@@ -15,17 +15,17 @@
  * along with Baritone.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package baritone.pathing.movement.movements;
+package baritone.pathing.actions.movements;
 
 import baritone.Baritone;
 import baritone.api.IBaritone;
 import baritone.api.pathing.movement.MovementStatus;
 import baritone.api.utils.BetterBlockPos;
 import baritone.api.utils.input.Input;
-import baritone.pathing.movement.CalculationContext;
-import baritone.pathing.movement.Movement;
-import baritone.pathing.movement.MovementHelper;
-import baritone.pathing.movement.MovementState;
+import baritone.pathing.actions.CalculationContext;
+import baritone.pathing.actions.Movement;
+import baritone.pathing.actions.MovementHelper;
+import baritone.pathing.actions.MovementState;
 import baritone.utils.BlockStateInterface;
 import com.google.common.collect.ImmutableSet;
 import java.util.Set;
@@ -34,11 +34,11 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.FallingBlock;
 import net.minecraft.world.level.block.state.BlockState;
 
-public class MovementAscend extends Movement {
+public class Ascend extends Movement {
 
     private int ticksWithoutPlacement = 0;
 
-    public MovementAscend(IBaritone baritone, BetterBlockPos src, BetterBlockPos dest) {
+    public Ascend(IBaritone baritone, BetterBlockPos src, BetterBlockPos dest) {
         super(baritone, src, dest, new BetterBlockPos[]{dest, src.above(2), dest.above()}, dest.below());
     }
 
@@ -103,7 +103,7 @@ public class MovementAscend extends Movement {
             // on top of our head
 
             // as in, if we have a block, then two FallingBlocks on top of it
-            // and that block is x, y+1, z, and we'd have to clear it to even start this movement
+            // and that block is x, y+1, z, and we'd have to clear it to even start this actions
             // we don't need to worry about those FallingBlocks because we've already cleared them
             return COST_INF;
             // you may think we only need to check srcUp2, not srcUp
@@ -162,7 +162,7 @@ public class MovementAscend extends Movement {
         }
         super.updateState(state);
         // TODO incorporate some behavior from ActionClimb (specifically how it waited until it was at most 1.2 blocks away before starting to jump
-        // for efficiency in ascending minimal height staircases, which is just repeated MovementAscend, so that it doesn't bonk its head on the ceiling repeatedly)
+        // for efficiency in ascending minimal height staircases, which is just repeated Ascend, so that it doesn't bonk its head on the ceiling repeatedly)
         if (state.getStatus() != MovementStatus.RUNNING) {
             return state;
         }

@@ -15,7 +15,7 @@
  * along with Baritone.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package baritone.pathing.movement;
+package baritone.pathing.actions;
 
 import baritone.Baritone;
 import baritone.api.IBaritone;
@@ -54,12 +54,12 @@ public abstract class Movement implements IMovement, MovementHelper {
     public List<BlockPos> toWalkIntoCached = null;
 
     /**
-     * Creates a new movement between two points.
+     * Creates a new actions between two points.
      * @param baritone The baritone instance
      * @param src Starting position
      * @param dest Destination position
-     * @param blocksToBreak Blocks that need to be broken for movement
-     * @param blockToPlace Block that needs to be placed for movement
+     * @param blocksToBreak Blocks that need to be broken for actions
+     * @param blockToPlace Block that needs to be placed for actions
      */
     protected Movement(IBaritone baritone, BetterBlockPos src, BetterBlockPos dest, BetterBlockPos[] blocksToBreak, BetterBlockPos blockToPlace) {
         this.baritone = baritone;
@@ -187,9 +187,9 @@ public abstract class Movement implements IMovement, MovementHelper {
     }
 
     /**
-     * Checks if the movement is prepared to execute by validating block positions and setting player actions.
+     * Checks if the actions is prepared to execute by validating block positions and setting player actions.
      *
-     * @param state Current movement state
+     * @param state Current actions state
      * @return true if prepared or unreachable, false if still needs preparation
      */
     protected boolean isNotPrepared(MovementState state) {
@@ -247,7 +247,7 @@ public abstract class Movement implements IMovement, MovementHelper {
     }
 
     /**
-     * Calculate latest movement state. Gets called once a tick.
+     * Calculate latest actions state. Gets called once a tick.
      *
      * @param state The current state
      * @return The new state

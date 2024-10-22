@@ -57,7 +57,7 @@ public final class RotationMoveEvent {
     }
 
     /**
-     * Set the yaw movement rotation
+     * Set the yaw actions rotation
      *
      * @param yaw Yaw rotation
      */
@@ -73,7 +73,7 @@ public final class RotationMoveEvent {
     }
 
     /**
-     * Set the pitch movement rotation
+     * Set the pitch actions rotation
      *
      * @param pitch Pitch rotation
      */

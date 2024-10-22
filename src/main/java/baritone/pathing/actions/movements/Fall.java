@@ -15,7 +15,7 @@
  * along with Baritone.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package baritone.pathing.movement.movements;
+package baritone.pathing.actions.movements;
 
 import baritone.api.IBaritone;
 import baritone.api.pathing.movement.MovementStatus;
@@ -24,11 +24,11 @@ import baritone.api.utils.Rotation;
 import baritone.api.utils.RotationUtils;
 import baritone.api.utils.VecUtils;
 import baritone.api.utils.input.Input;
-import baritone.pathing.movement.CalculationContext;
-import baritone.pathing.movement.Movement;
-import baritone.pathing.movement.MovementHelper;
-import baritone.pathing.movement.MovementState;
-import baritone.pathing.movement.MovementState.MovementTarget;
+import baritone.pathing.actions.CalculationContext;
+import baritone.pathing.actions.Movement;
+import baritone.pathing.actions.MovementHelper;
+import baritone.pathing.actions.MovementState;
+import baritone.pathing.actions.MovementState.MovementTarget;
 import baritone.utils.pathing.MutableMoveResult;
 import java.util.HashSet;
 import java.util.Optional;
@@ -47,19 +47,19 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.WaterFluid;
 import net.minecraft.world.phys.Vec3;
 
-public class MovementFall extends Movement {
+public class Fall extends Movement {
 
     private static final ItemStack STACK_BUCKET_WATER = new ItemStack(Items.WATER_BUCKET);
     private static final ItemStack STACK_BUCKET_EMPTY = new ItemStack(Items.BUCKET);
 
-    public MovementFall(IBaritone baritone, BetterBlockPos src, BetterBlockPos dest) {
-        super(baritone, src, dest, MovementFall.buildPositionsToBreak(src, dest));
+    public Fall(IBaritone baritone, BetterBlockPos src, BetterBlockPos dest) {
+        super(baritone, src, dest, Fall.buildPositionsToBreak(src, dest));
     }
 
     @Override
     public double calculateCost(CalculationContext context) {
         MutableMoveResult result = new MutableMoveResult();
-        MovementDescend.cost(context, src.x, src.y, src.z, dest.x, dest.z, result);
+        Descend.cost(context, src.x, src.y, src.z, dest.x, dest.z, result);
         if (result.y != dest.y) {
             return COST_INF; // doesn't apply to us, this position is a descend not a fall
         }
@@ -79,7 +79,7 @@ public class MovementFall extends Movement {
     private boolean willPlaceBucket() {
         CalculationContext context = new CalculationContext(baritone);
         MutableMoveResult result = new MutableMoveResult();
-        return MovementDescend.dynamicFallCost(context, src.x, src.y, src.z, dest.x, dest.z, 0, context.get(dest.x, src.y - 2, dest.z), result);
+        return Descend.dynamicFallCost(context, src.x, src.y, src.z, dest.x, dest.z, 0, context.get(dest.x, src.y - 2, dest.z), result);
     }
 
     @Override

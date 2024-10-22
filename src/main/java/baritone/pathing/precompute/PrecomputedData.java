@@ -17,7 +17,7 @@
 
 package baritone.pathing.precompute;
 
-import baritone.pathing.movement.MovementHelper;
+import baritone.pathing.actions.MovementHelper;
 import baritone.utils.BlockStateInterface;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;

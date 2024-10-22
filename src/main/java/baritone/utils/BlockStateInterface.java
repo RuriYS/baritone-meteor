@@ -87,7 +87,7 @@ public class BlockStateInterface {
     public static BlockState get(IPlayerContext ctx, BlockPos pos) {
         return new BlockStateInterface(ctx).get0(pos.getX(), pos.getY(), pos.getZ()); // immense iq
         // can't just do world().get because that doesn't work for out of bounds
-        // and toBreak and stuff fails when the movement is instantiated out of load range but it's not able to BlockStateInterface.get what it's going to walk on
+        // and toBreak and stuff fails when the actions is instantiated out of load range but it's not able to BlockStateInterface.get what it's going to walk on
     }
 
     public BlockState get0(BlockPos pos) {
@@ -104,7 +104,7 @@ public class BlockStateInterface {
         if (useTheRealWorld) {
             LevelChunk cached = prev;
             // there's great cache locality in block state lookups
-            // generally it's within each movement
+            // generally it's within each actions
             // if it's the same chunk as last time
             // we can just skip the mc.world.getChunk lookup
             // which is a Long2ObjectOpenHashMap.get

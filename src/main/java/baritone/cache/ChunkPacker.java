@@ -18,7 +18,7 @@
 package baritone.cache;
 
 import baritone.api.utils.BlockUtils;
-import baritone.pathing.movement.MovementHelper;
+import baritone.pathing.actions.MovementHelper;
 import baritone.utils.pathing.PathingBlockType;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.block.AirBlock;

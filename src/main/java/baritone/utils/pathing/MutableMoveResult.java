@@ -20,7 +20,7 @@ package baritone.utils.pathing;
 import baritone.api.pathing.movement.ActionCosts;
 
 /**
- * The result of a calculated movement, with destination x, y, z, and the cost of performing the movement
+ * The result of a calculated actions, with destination x, y, z, and the cost of performing the actions
  *
  * @author leijurv
  */

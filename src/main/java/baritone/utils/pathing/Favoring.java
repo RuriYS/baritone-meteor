@@ -21,7 +21,7 @@ import baritone.api.pathing.calc.IPath;
 import baritone.api.utils.BetterBlockPos;
 import baritone.api.utils.Helper;
 import baritone.api.utils.IPlayerContext;
-import baritone.pathing.movement.CalculationContext;
+import baritone.pathing.actions.CalculationContext;
 import it.unimi.dsi.fastutil.longs.Long2DoubleOpenHashMap;
 
 public final class Favoring {

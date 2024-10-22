@@ -15,7 +15,7 @@
  * along with Baritone.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package baritone.pathing.movement;
+package baritone.pathing.actions;
 
 import baritone.Baritone;
 import baritone.api.BaritoneAPI;
@@ -25,7 +25,7 @@ import baritone.api.pathing.movement.MovementStatus;
 import baritone.api.utils.*;
 import baritone.api.utils.Rotation;
 import baritone.api.utils.input.Input;
-import baritone.pathing.movement.MovementState.MovementTarget;
+import baritone.pathing.actions.MovementState.MovementTarget;
 import baritone.pathing.precompute.Ternary;
 import baritone.utils.BlockStateInterface;
 import baritone.utils.ToolSet;
@@ -55,7 +55,7 @@ import net.minecraft.world.phys.Vec3;
 
 import java.util.Optional;
 
-import static baritone.pathing.movement.Movement.VALID_DIRECTIONS;
+import static baritone.pathing.actions.Movement.VALID_DIRECTIONS;
 import static baritone.pathing.precompute.Ternary.*;
 
 /**
@@ -262,7 +262,7 @@ public interface MovementHelper extends ActionCosts, Helper {
     }
 
     /**
-     * canWalkThrough but also won't impede movement at all. so not including doors or fence gates (we'd have to right click),
+     * canWalkThrough but also won't impede actions at all. so not including doors or fence gates (we'd have to right click),
      * not including water, and not including ladders or vines or cobwebs (they slow us down)
      */
     static boolean fullyPassable(CalculationContext context, int x, int y, int z) {
@@ -293,7 +293,7 @@ public interface MovementHelper extends ActionCosts, Helper {
     }
 
     static boolean isReplaceable(int x, int y, int z, BlockState state, BlockStateInterface bsi) {
-        // for MovementTraverse and MovementAscend
+        // for Traverse and Ascend
         // block double plant defaults to true when the block doesn't match, so don't need to check that case
         // all other overrides just return true or false
         // the only case to deal with is snow

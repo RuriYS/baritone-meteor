@@ -15,7 +15,7 @@
  * along with Baritone.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package baritone.pathing.movement;
+package baritone.pathing.actions;
 
 import baritone.api.pathing.movement.MovementStatus;
 import baritone.api.utils.Rotation;
@@ -68,7 +68,7 @@ public class MovementState {
         /**
          * Whether or not this target must force rotations.
          * <p>
-         * {@code true} if we're trying to place or break blocks, {@code false} if we're trying to look at the movement location
+         * {@code true} if we're trying to place or break blocks, {@code false} if we're trying to look at the actions location
          */
         private boolean forceRotations;
 

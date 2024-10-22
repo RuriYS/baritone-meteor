@@ -15,7 +15,7 @@
  * along with Baritone.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package baritone.pathing.movement.movements;
+package baritone.pathing.actions.movements;
 
 import baritone.Baritone;
 import baritone.api.IBaritone;
@@ -25,10 +25,10 @@ import baritone.api.utils.Rotation;
 import baritone.api.utils.RotationUtils;
 import baritone.api.utils.VecUtils;
 import baritone.api.utils.input.Input;
-import baritone.pathing.movement.CalculationContext;
-import baritone.pathing.movement.Movement;
-import baritone.pathing.movement.MovementHelper;
-import baritone.pathing.movement.MovementState;
+import baritone.pathing.actions.CalculationContext;
+import baritone.pathing.actions.Movement;
+import baritone.pathing.actions.MovementHelper;
+import baritone.pathing.actions.MovementState;
 import baritone.utils.BlockStateInterface;
 import com.google.common.collect.ImmutableSet;
 import net.minecraft.core.BlockPos;
@@ -39,9 +39,9 @@ import net.minecraft.world.phys.Vec3;
 
 import java.util.Set;
 
-public class MovementPillar extends Movement {
+public class Pillar extends Movement {
 
-    public MovementPillar(IBaritone baritone, BetterBlockPos start, BetterBlockPos end) {
+    public Pillar(IBaritone baritone, BetterBlockPos start, BetterBlockPos end) {
         super(baritone, start, end, new BetterBlockPos[]{start.above(2)}, start);
     }
 
@@ -114,7 +114,7 @@ public class MovementPillar extends Movement {
             } else {
                 BlockState check = context.get(x, y + 3, z); // the block on top of the one we're going to break, could it fall on us?
                 if (check.getBlock() instanceof FallingBlock) {
-                    // see MovementAscend's identical check for breaking a falling block above our head
+                    // see Ascend's identical check for breaking a falling block above our head
                     if (srcUp == null) {
                         srcUp = context.get(x, y + 1, z);
                     }

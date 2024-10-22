@@ -15,17 +15,17 @@
  * along with Baritone.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package baritone.pathing.movement.movements;
+package baritone.pathing.actions.movements;
 
 import baritone.Baritone;
 import baritone.api.IBaritone;
 import baritone.api.pathing.movement.MovementStatus;
 import baritone.api.utils.BetterBlockPos;
 import baritone.api.utils.input.Input;
-import baritone.pathing.movement.CalculationContext;
-import baritone.pathing.movement.Movement;
-import baritone.pathing.movement.MovementHelper;
-import baritone.pathing.movement.MovementState;
+import baritone.pathing.actions.CalculationContext;
+import baritone.pathing.actions.Movement;
+import baritone.pathing.actions.MovementHelper;
+import baritone.pathing.actions.MovementState;
 import baritone.utils.BlockStateInterface;
 import baritone.utils.pathing.MutableMoveResult;
 import net.minecraft.core.Direction;
@@ -38,7 +38,7 @@ import net.minecraft.world.level.material.WaterFluid;
 import java.util.HashSet;
 import java.util.Set;
 
-public class MovementParkour extends Movement {
+public class Parkour extends Movement {
 
     private static final BetterBlockPos[] EMPTY = new BetterBlockPos[]{};
 
@@ -46,18 +46,18 @@ public class MovementParkour extends Movement {
     private final int dist;
     private final boolean ascend;
 
-    private MovementParkour(IBaritone baritone, BetterBlockPos src, int dist, Direction dir, boolean ascend) {
+    private Parkour(IBaritone baritone, BetterBlockPos src, int dist, Direction dir, boolean ascend) {
         super(baritone, src, src.relative(dir, dist).above(ascend ? 1 : 0), EMPTY, src.relative(dir, dist).below(ascend ? 0 : 1));
         this.direction = dir;
         this.dist = dist;
         this.ascend = ascend;
     }
 
-    public static MovementParkour cost(CalculationContext context, BetterBlockPos src, Direction direction) {
+    public static Parkour cost(CalculationContext context, BetterBlockPos src, Direction direction) {
         MutableMoveResult res = new MutableMoveResult();
         cost(context, src.x, src.y, src.z, direction, res);
         int dist = Math.abs(res.x - src.x) + Math.abs(res.z - src.z);
-        return new MovementParkour(context.getBaritone(), src, dist, direction, res.y > src.y);
+        return new Parkour(context.getBaritone(), src, dist, direction, res.y > src.y);
     }
 
     public static void cost(CalculationContext context, int x, int y, int z, Direction dir, MutableMoveResult res) {
@@ -243,7 +243,7 @@ public class MovementParkour extends Movement {
 
     @Override
     public boolean safeToCancel(MovementState state) {
-        // once this movement is instantiated, the state is default to PREPPING
+        // once this actions is instantiated, the state is default to PREPPING
         // but once it's ticked for the first time it changes to RUNNING
         // since we don't really know anything about momentum, it suffices to say Parkour can only be canceled on the 0th tick
         return state.getStatus() != MovementStatus.RUNNING;

@@ -366,7 +366,7 @@ public final class Settings {
     public final Setting<Boolean> overshootTraverse = new Setting<>(true);
 
     /**
-     * When breaking blocks for a movement, wait until all falling blocks have settled before continuing
+     * When breaking blocks for a actions, wait until all falling blocks have settled before continuing
      */
     public final Setting<Boolean> pauseMiningForFallingBlocks = new Setting<>(true);
 
@@ -490,7 +490,7 @@ public final class Settings {
     public final Setting<Boolean> cutoffAtLoadBoundary = new Setting<>(false);
 
     /**
-     * If a movement's cost increases by more than this amount between calculation and execution (due to changes
+     * If a actions's cost increases by more than this amount between calculation and execution (due to changes
      * in the environment / world), cancel and recalculate
      */
     public final Setting<Double> maxCostIncrease = new Setting<>(10D);
@@ -566,7 +566,7 @@ public final class Settings {
     public final Setting<Boolean> repackOnAnyBlockChange = new Setting<>(true);
 
     /**
-     * If a movement takes this many ticks more than its initial cost estimate, cancel it
+     * If a actions takes this many ticks more than its initial cost estimate, cancel it
      */
     public final Setting<Integer> movementTimeoutTicks = new Setting<>(100);
 
@@ -1390,7 +1390,7 @@ public final class Settings {
     public final Setting<Boolean> notificationOnMineFail = new Setting<>(true);
 
     /**
-     * The number of ticks of elytra movement to simulate while firework boost is not active. Higher values are
+     * The number of ticks of elytra actions to simulate while firework boost is not active. Higher values are
      * computationally more expensive.
      */
     public final Setting<Integer> elytraSimulationTicks = new Setting<>(20);

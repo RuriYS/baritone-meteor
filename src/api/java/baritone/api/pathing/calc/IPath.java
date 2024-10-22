@@ -34,7 +34,7 @@ import java.util.List;
 public interface IPath {
     /**
      * Returns the sequence of movements that make up this path.
-     * @return Ordered list of movements where each movement connects consecutive positions
+     * @return Ordered list of movements where each actions connects consecutive positions
      */
     List<IMovement> movements();
 
@@ -149,10 +149,10 @@ public interface IPath {
             IMovement movement = movements.get(i);
 
             if (!src.equals(movement.getSrc())) {
-                throw new IllegalStateException("Path source is not equal to the movement source");
+                throw new IllegalStateException("Path source is not equal to the actions source");
             }
             if (!dest.equals(movement.getDest())) {
-                throw new IllegalStateException("Path destination is not equal to the movement destination");
+                throw new IllegalStateException("Path destination is not equal to the actions destination");
             }
             if (seenSoFar.contains(src)) {
                 throw new IllegalStateException("Path doubles back on itself, making a loop");

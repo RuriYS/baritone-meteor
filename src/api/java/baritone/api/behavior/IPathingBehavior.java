@@ -46,7 +46,7 @@ public interface IPathingBehavior extends IBehavior {
      * segment. Given that the return type is an optional, {@link Optional#empty()}
      * will be returned in the case that there is no current segment being pathed.
      *
-     * @param includeCurrentMovement whether or not to include the entirety of the cost of the currently executing movement in the total
+     * @param includeCurrentMovement whether or not to include the entirety of the cost of the currently executing actions in the total
      * @return The estimated remaining ticks in the current segment.
      */
     default Optional<Double> ticksRemainingInSegment(boolean includeCurrentMovement) {

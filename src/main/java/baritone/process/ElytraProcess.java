@@ -36,8 +36,8 @@ import baritone.api.utils.BetterBlockPos;
 import baritone.api.utils.Rotation;
 import baritone.api.utils.RotationUtils;
 import baritone.api.utils.input.Input;
-import baritone.pathing.movement.CalculationContext;
-import baritone.pathing.movement.movements.MovementFall;
+import baritone.pathing.actions.CalculationContext;
+import baritone.pathing.actions.movements.Fall;
 import baritone.process.elytra.ElytraBehavior;
 import baritone.process.elytra.NetherPathfinderContext;
 import baritone.process.elytra.NullElytraProcess;
@@ -221,7 +221,7 @@ public class ElytraProcess extends BaritoneProcessHelper implements IBaritonePro
             final IPathExecutor executor = baritone.getPathingBehavior().getCurrentPath();
             if (executor != null && executor.getPath().getGoal() == this.goal) {
                 final IMovement fall = executor.getPath().movements().stream()
-                        .filter(movement -> movement instanceof MovementFall)
+                        .filter(movement -> movement instanceof Fall)
                         .findFirst().orElse(null);
 
                 if (fall != null) {
@@ -257,7 +257,7 @@ public class ElytraProcess extends BaritoneProcessHelper implements IBaritonePro
             final boolean canStartFlying = ctx.player().fallDistance > 1.0f
                     && !isSafeToCancel
                     && executor != null
-                    && executor.getPath().movements().get(executor.getPosition()) instanceof MovementFall;
+                    && executor.getPath().movements().get(executor.getPosition()) instanceof Fall;
 
             if (canStartFlying) {
                 this.state = State.START_FLYING;

@@ -15,26 +15,26 @@
  * along with Baritone.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package baritone.pathing.movement.movements;
+package baritone.pathing.actions.movements;
 
 import baritone.api.IBaritone;
 import baritone.api.pathing.movement.MovementStatus;
 import baritone.api.utils.BetterBlockPos;
-import baritone.pathing.movement.CalculationContext;
-import baritone.pathing.movement.Movement;
-import baritone.pathing.movement.MovementHelper;
-import baritone.pathing.movement.MovementState;
+import baritone.pathing.actions.CalculationContext;
+import baritone.pathing.actions.Movement;
+import baritone.pathing.actions.MovementHelper;
+import baritone.pathing.actions.MovementState;
 import com.google.common.collect.ImmutableSet;
 import java.util.Set;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 
-public class MovementDownward extends Movement {
+public class Downward extends Movement {
 
     private int numTicks = 0;
 
-    public MovementDownward(IBaritone baritone, BetterBlockPos start, BetterBlockPos end) {
+    public Downward(IBaritone baritone, BetterBlockPos start, BetterBlockPos end) {
         super(baritone, start, end, new BetterBlockPos[]{end});
     }
 
@@ -66,7 +66,7 @@ public class MovementDownward extends Movement {
         if (downBlock == Blocks.LADDER || downBlock == Blocks.VINE) {
             return LADDER_DOWN_ONE_COST;
         } else {
-            // we're standing on it, while it might be block falling, it'll be air by the time we get here in the movement
+            // we're standing on it, while it might be block falling, it'll be air by the time we get here in the actions
             return FALL_N_BLOCKS_COST[1] + MovementHelper.getMiningDurationTicks(context, x, y - 1, z, down, false);
         }
     }

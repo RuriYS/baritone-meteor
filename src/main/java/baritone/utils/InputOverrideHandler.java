@@ -99,7 +99,7 @@ public final class InputOverrideHandler extends Behavior implements IInputOverri
             }
         } else {
             if (ctx.player().input.getClass() == PlayerMovementInput.class) {
-                // allow other movement inputs that aren't this one, e.g. for a freecam
+                // allow other actions inputs that aren't this one, e.g. for a freecam
                 // only set it if it was previously incorrect
                 // gotta do it this way, or else it constantly thinks you're beginning a double tap W sprint lol
                 ctx.player().input = new KeyboardInput(ctx.minecraft().options);
