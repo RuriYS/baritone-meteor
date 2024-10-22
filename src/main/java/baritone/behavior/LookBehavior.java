@@ -42,7 +42,7 @@ public final class LookBehavior extends Behavior implements ILookBehavior {
     /**
      * The rotation known to the server. Returned by {@link #getEffectiveRotation()} for use in {@link IPlayerContext}.
      */
-    private Rotation serverRotation;
+    public Rotation serverRotation;
 
     /**
      * The last player rotation. Used to restore the player's angle when using free look.
