@@ -150,13 +150,24 @@ public interface Helper {
      */
     default void logDebug(String message) {
         if (!BaritoneAPI.getSettings().chatDebug.value) {
-            //System.out.println("Suppressed debug message:");
-            //System.out.println(message);
             return;
         }
-        // We won't log debug chat into toasts
-        // Because only a madman would want that extreme spam -_-
-        logDirect(message, false);
+
+        String className = Thread.currentThread().getStackTrace()[2].getClassName();
+        className = className.substring(className.lastIndexOf('.') + 1);
+        MutableComponent classComp = Component.literal(className);
+        classComp.setStyle(classComp.getStyle().withColor(ChatFormatting.AQUA));
+
+        MutableComponent component = Component.literal("");
+        component.setStyle(component.getStyle().withColor(ChatFormatting.DARK_PURPLE));
+        component.append("[");
+        component.append(classComp);
+        component.append("] ");
+
+        MutableComponent msgComp = Component.literal(message);
+        msgComp.setStyle(msgComp.getStyle().withColor(ChatFormatting.LIGHT_PURPLE));
+
+        logDirect(false, component, msgComp);
     }
 
     /**
