@@ -218,7 +218,7 @@ public class ElytraProcess extends BaritoneProcessHelper implements IBaritonePro
             if (this.goal == null) {
                 this.goal = new GoalYLevel(31);
             }
-            final IPathExecutor executor = baritone.getPathingBehavior().getCurrent();
+            final IPathExecutor executor = baritone.getPathingBehavior().getCurrentPath();
             if (executor != null && executor.getPath().getGoal() == this.goal) {
                 final IMovement fall = executor.getPath().movements().stream()
                         .filter(movement -> movement instanceof MovementFall)
@@ -253,7 +253,7 @@ public class ElytraProcess extends BaritoneProcessHelper implements IBaritonePro
         }
 
         if (this.state == State.GET_TO_JUMP) {
-            final IPathExecutor executor = baritone.getPathingBehavior().getCurrent();
+            final IPathExecutor executor = baritone.getPathingBehavior().getCurrentPath();
             final boolean canStartFlying = ctx.player().fallDistance > 1.0f
                     && !isSafeToCancel
                     && executor != null

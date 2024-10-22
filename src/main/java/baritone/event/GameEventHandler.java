@@ -50,7 +50,7 @@ public final class GameEventHandler implements IEventBus, Helper {
     }
 
     @Override
-    public final void onTick(TickEvent event) {
+    public void onTick(TickEvent event) {
         if (event.getType() == TickEvent.Type.IN) {
             try {
                 baritone.bsi = new BlockStateInterface(baritone.getPlayerContext(), true);
@@ -70,12 +70,12 @@ public final class GameEventHandler implements IEventBus, Helper {
     }
 
     @Override
-    public final void onPlayerUpdate(PlayerUpdateEvent event) {
+    public void onPlayerUpdate(PlayerUpdateEvent event) {
         listeners.forEach(l -> l.onPlayerUpdate(event));
     }
 
     @Override
-    public final void onSendChatMessage(ChatEvent event) {
+    public void onSendChatMessage(ChatEvent event) {
         listeners.forEach(l -> l.onSendChatMessage(event));
     }
 
@@ -129,12 +129,12 @@ public final class GameEventHandler implements IEventBus, Helper {
     }
 
     @Override
-    public final void onRenderPass(RenderEvent event) {
+    public void onRenderPass(RenderEvent event) {
         listeners.forEach(l -> l.onRenderPass(event));
     }
 
     @Override
-    public final void onWorldEvent(WorldEvent event) {
+    public void onWorldEvent(WorldEvent event) {
         WorldProvider cache = baritone.getWorldProvider();
 
         if (event.getState() == EventState.POST) {
@@ -148,12 +148,12 @@ public final class GameEventHandler implements IEventBus, Helper {
     }
 
     @Override
-    public final void onSendPacket(PacketEvent event) {
+    public void onSendPacket(PacketEvent event) {
         listeners.forEach(l -> l.onSendPacket(event));
     }
 
     @Override
-    public final void onReceivePacket(PacketEvent event) {
+    public void onReceivePacket(PacketEvent event) {
         listeners.forEach(l -> l.onReceivePacket(event));
     }
 
@@ -183,7 +183,7 @@ public final class GameEventHandler implements IEventBus, Helper {
     }
 
     @Override
-    public final void registerEventListener(IGameEventListener listener) {
+    public void registerEventListener(IGameEventListener listener) {
         this.listeners.add(listener);
     }
 }

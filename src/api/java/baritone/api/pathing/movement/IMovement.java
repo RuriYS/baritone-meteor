@@ -28,6 +28,11 @@ public interface IMovement {
 
     double getCost();
 
+    /**
+     * Updates the movement state and handles player actions like flying, swimming, and rotation.
+     *
+     * @return Current movement status after update
+     */
     MovementStatus update();
 
     /**

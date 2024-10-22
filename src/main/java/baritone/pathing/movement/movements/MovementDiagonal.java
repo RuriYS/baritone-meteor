@@ -261,7 +261,7 @@ public class MovementDiagonal extends Movement {
 
         if (ctx.playerFeet().equals(dest)) {
             return state.setStatus(MovementStatus.SUCCESS);
-        } else if (!playerInValidPosition() && !(MovementHelper.isLiquid(ctx, src) && getValidPositions().contains(ctx.playerFeet().above()))) {
+        } else if (playerNotInValidPosition() && !(MovementHelper.isLiquid(ctx, src) && getValidPositions().contains(ctx.playerFeet().above()))) {
             return state.setStatus(MovementStatus.UNREACHABLE);
         }
         if (dest.y > src.y && ctx.player().position().y < src.y + 0.1 && ctx.player().horizontalCollision) {
@@ -279,7 +279,7 @@ public class MovementDiagonal extends Movement {
             return false;
         }
         for (int i = 0; i < 4; i++) {
-            if (!MovementHelper.canWalkThrough(ctx, positionsToBreak[i])) {
+            if (!MovementHelper.canWalkThrough(ctx, blocksToBreak[i])) {
                 return false;
             }
         }
@@ -287,8 +287,8 @@ public class MovementDiagonal extends Movement {
     }
 
     @Override
-    protected boolean prepared(MovementState state) {
-        return true;
+    protected boolean isNotPrepared(MovementState state) {
+        return false;
     }
 
     @Override
@@ -298,8 +298,8 @@ public class MovementDiagonal extends Movement {
         }
         List<BlockPos> result = new ArrayList<>();
         for (int i = 4; i < 6; i++) {
-            if (!MovementHelper.canWalkThrough(bsi, positionsToBreak[i].x, positionsToBreak[i].y, positionsToBreak[i].z)) {
-                result.add(positionsToBreak[i]);
+            if (!MovementHelper.canWalkThrough(bsi, blocksToBreak[i].x, blocksToBreak[i].y, blocksToBreak[i].z)) {
+                result.add(blocksToBreak[i]);
             }
         }
         toBreakCached = result;
@@ -313,8 +313,8 @@ public class MovementDiagonal extends Movement {
         }
         List<BlockPos> result = new ArrayList<>();
         for (int i = 0; i < 4; i++) {
-            if (!MovementHelper.canWalkThrough(bsi, positionsToBreak[i].x, positionsToBreak[i].y, positionsToBreak[i].z)) {
-                result.add(positionsToBreak[i]);
+            if (!MovementHelper.canWalkThrough(bsi, blocksToBreak[i].x, blocksToBreak[i].y, blocksToBreak[i].z)) {
+                result.add(blocksToBreak[i]);
             }
         }
         toWalkIntoCached = result;

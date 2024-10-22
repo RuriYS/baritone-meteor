@@ -80,7 +80,7 @@ public class MovementDownward extends Movement {
 
         if (ctx.playerFeet().equals(dest)) {
             return state.setStatus(MovementStatus.SUCCESS);
-        } else if (!playerInValidPosition()) {
+        } else if (playerNotInValidPosition()) {
             return state.setStatus(MovementStatus.UNREACHABLE);
         }
         double diffX = ctx.player().position().x - (dest.getX() + 0.5);
@@ -90,7 +90,7 @@ public class MovementDownward extends Movement {
         if (numTicks++ < 10 && ab < 0.2) {
             return state;
         }
-        MovementHelper.moveTowards(ctx, state, positionsToBreak[0]);
+        MovementHelper.moveTowards(ctx, state, blocksToBreak[0]);
         return state;
     }
 }

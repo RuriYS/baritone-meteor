@@ -109,7 +109,7 @@ public final class BackfillProcess extends BaritoneProcessHelper {
     }
 
     private boolean partOfCurrentMovement(BlockPos pos) {
-        PathExecutor exec = baritone.getPathingBehavior().getCurrent();
+        PathExecutor exec = baritone.getPathingBehavior().getCurrentPath();
         if (exec == null || exec.finished() || exec.failed()) {
             return false;
         }

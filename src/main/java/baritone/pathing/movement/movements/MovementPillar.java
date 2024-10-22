@@ -188,7 +188,7 @@ public class MovementPillar extends Movement {
         boolean ladder = fromDown.getBlock() == Blocks.LADDER || fromDown.getBlock() == Blocks.VINE;
         boolean vine = fromDown.getBlock() == Blocks.VINE;
         Rotation rotation = RotationUtils.calcRotationFromVec3d(ctx.playerHead(),
-                VecUtils.getBlockPosCenter(positionToPlace),
+                VecUtils.getBlockPosCenter(blockToPlace),
                 ctx.playerRotations());
         if (!ladder) {
             state.setTarget(new MovementState.MovementTarget(ctx.playerRotations().withPitch(rotation.getPitch()), true));
@@ -271,7 +271,7 @@ public class MovementPillar extends Movement {
     }
 
     @Override
-    protected boolean prepared(MovementState state) {
+    protected boolean isNotPrepared(MovementState state) {
         if (ctx.playerFeet().equals(src) || ctx.playerFeet().equals(src.below())) {
             Block block = BlockStateInterface.getBlock(ctx, src.below());
             if (block == Blocks.LADDER || block == Blocks.VINE) {
@@ -279,8 +279,8 @@ public class MovementPillar extends Movement {
             }
         }
         if (MovementHelper.isWater(ctx, dest.above())) {
-            return true;
+            return false;
         }
-        return super.prepared(state);
+        return super.isNotPrepared(state);
     }
 }

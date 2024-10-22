@@ -53,10 +53,9 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 
-import java.util.List;
 import java.util.Optional;
 
-import static baritone.pathing.movement.Movement.HORIZONTALS_BUT_ALSO_DOWN_____SO_EVERY_DIRECTION_EXCEPT_UP;
+import static baritone.pathing.movement.Movement.VALID_DIRECTIONS;
 import static baritone.pathing.precompute.Ternary.*;
 
 /**
@@ -754,7 +753,7 @@ public interface MovementHelper extends ActionCosts, Helper {
             found = true;
         }
         for (int i = 0; i < 5; i++) {
-            BlockPos against1 = placeAt.relative(HORIZONTALS_BUT_ALSO_DOWN_____SO_EVERY_DIRECTION_EXCEPT_UP[i]);
+            BlockPos against1 = placeAt.relative(VALID_DIRECTIONS[i]);
             if (MovementHelper.canPlaceAgainst(ctx, against1)) {
                 if (!((Baritone) baritone).getInventoryBehavior().selectThrowawayForLocation(false, placeAt.getX(), placeAt.getY(), placeAt.getZ())) { // get ready to place a throwaway block
                     Helper.HELPER.logDebug("bb pls get me some blocks. dirt, netherrack, cobble");

@@ -43,7 +43,7 @@ import java.util.Optional;
 public abstract class MixinLivingEntity extends Entity {
 
     /**
-     * Event called to override the movement direction when jumping
+     * Event called to overrideCost the movement direction when jumping
      */
     @Unique
     private RotationMoveEvent jumpRotationEvent;

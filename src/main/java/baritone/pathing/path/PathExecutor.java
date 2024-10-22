@@ -118,7 +118,7 @@ public class PathExecutor implements IPathExecutor, Helper {
         BetterBlockPos playerPos = ctx.playerFeet();
 
         // Validate position
-        if (!isPositionValid(movement, playerPos)) {
+        if (!Baritone.settings().freeControl.value && !isPositionValid(movement, playerPos)) {
             logDebug("Invalid pos, pos: " + playerPos);
             if (invalidPosHandled(playerPos)) {
                 return false;
@@ -156,6 +156,10 @@ public class PathExecutor implements IPathExecutor, Helper {
 
         // Execute movement
         MovementStatus movementStatus = movement.update();
+
+        // logDebug("Movement status: " + movementStatus.toString());
+        // logDebug("Current movement: " + movement);
+
         if (movementStatus == MovementStatus.UNREACHABLE || movementStatus == MovementStatus.FAILED) {
             logDebug("Movement returns status " + movementStatus);
             cancel();
@@ -171,7 +175,7 @@ public class PathExecutor implements IPathExecutor, Helper {
 
         // Handle ongoing movement
         sprintNextTick = shouldSprintNextTick();
-        if (!sprintNextTick) {
+        if (!sprintNextTick && !Baritone.settings().freeControl.value) {
             ctx.player().setSprinting(false);
         }
 
@@ -246,7 +250,7 @@ public class PathExecutor implements IPathExecutor, Helper {
         }
 
         if (possiblyOffPath(status, MAX_MAX_DIST_FROM_PATH)) {
-            logDebug("too far from path");
+            logDebug("Too far from path, cancelling");
             cancel();
             return true;
         }
@@ -364,6 +368,9 @@ public class PathExecutor implements IPathExecutor, Helper {
 
     private boolean possiblyOffPath(Tuple<Double, BlockPos> status, double leniency) {
         double distanceFromPath = status.getA();
+        if (Baritone.settings().freeControl.value) {
+            leniency = 30.0; // Allow much more distance when in free control TODO config for this
+        }
         if (distanceFromPath > leniency) {
             // when we're midair in the middle of a fall, we're very far from both the beginning and the end, but we aren't actually off path
             if (path.movements().get(pathPosition) instanceof MovementFall) {

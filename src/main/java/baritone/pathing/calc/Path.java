@@ -120,7 +120,7 @@ class Path extends PathBase {
                 // have to calculate the cost at calculation time so we can accurately judge whether a cost increase happened between cached calculation and real execution
                 // however, taking into account possible favoring that could skew the node cost, we really want the stricter limit of the two
                 // so we take the minimum of the path node cost difference, and the calculated cost
-                move.override(Math.min(move.calculateCost(context), cost));
+                move.overrideCost(Math.min(move.calculateCost(context), cost));
                 return move;
             }
         }

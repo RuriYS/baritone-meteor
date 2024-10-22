@@ -97,8 +97,8 @@ public final class PathRenderer implements IRenderer {
             return;
         }
 
-        PathExecutor current = behavior.getCurrent(); // this should prevent most race conditions?
-        PathExecutor next = behavior.getNext(); // like, now it's not possible for current!=null to be true, then suddenly false because of another thread
+        PathExecutor current = behavior.getCurrentPath(); // this should prevent most race conditions?
+        PathExecutor next = behavior.getNextPlannedPath(); // like, now it's not possible for current!=null to be true, then suddenly false because of another thread
         if (current != null && settings.renderSelectionBoxes.value) {
             drawManySelectionBoxes(event.getModelViewStack(), ctx.player(), current.toBreak(), settings.colorBlocksToBreak.value);
             drawManySelectionBoxes(event.getModelViewStack(), ctx.player(), current.toPlace(), settings.colorBlocksToPlace.value);

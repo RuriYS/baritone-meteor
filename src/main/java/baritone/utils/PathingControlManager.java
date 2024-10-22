@@ -153,7 +153,7 @@ public class PathingControlManager implements IPathingControlManager {
     }
 
     public boolean forceRevalidate(Goal newGoal) {
-        PathExecutor current = baritone.getPathingBehavior().getCurrent();
+        PathExecutor current = baritone.getPathingBehavior().getCurrentPath();
         if (current != null) {
             if (newGoal.isInGoal(current.getPath().getDest())) {
                 return false;
@@ -164,7 +164,7 @@ public class PathingControlManager implements IPathingControlManager {
     }
 
     public boolean revalidateGoal(Goal newGoal) {
-        PathExecutor current = baritone.getPathingBehavior().getCurrent();
+        PathExecutor current = baritone.getPathingBehavior().getCurrentPath();
         if (current != null) {
             Goal intended = current.getPath().getGoal();
             BlockPos end = current.getPath().getDest();

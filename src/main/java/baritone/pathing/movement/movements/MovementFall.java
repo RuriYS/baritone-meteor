@@ -188,17 +188,17 @@ public class MovementFall extends Movement {
     }
 
     @Override
-    protected boolean prepared(MovementState state) {
+    protected boolean isNotPrepared(MovementState state) {
         if (state.getStatus() == MovementStatus.WAITING) {
-            return true;
+            return false;
         }
         // only break if one of the first three needs to be broken
         // specifically ignore the last one which might be water
-        for (int i = 0; i < 4 && i < positionsToBreak.length; i++) {
-            if (!MovementHelper.canWalkThrough(ctx, positionsToBreak[i])) {
-                return super.prepared(state);
+        for (int i = 0; i < 4 && i < blocksToBreak.length; i++) {
+            if (!MovementHelper.canWalkThrough(ctx, blocksToBreak[i])) {
+                return super.isNotPrepared(state);
             }
         }
-        return true;
+        return false;
     }
 }

@@ -50,7 +50,7 @@ public interface IPathingBehavior extends IBehavior {
      * @return The estimated remaining ticks in the current segment.
      */
     default Optional<Double> ticksRemainingInSegment(boolean includeCurrentMovement) {
-        IPathExecutor current = getCurrent();
+        IPathExecutor current = getCurrentPath();
         if (current == null) {
             return Optional.empty();
         }
@@ -84,7 +84,7 @@ public interface IPathingBehavior extends IBehavior {
      * @see #isPathing()
      */
     default boolean hasPath() {
-        return getCurrent() != null;
+        return getCurrentPath() != null;
     }
 
     /**
@@ -110,7 +110,7 @@ public interface IPathingBehavior extends IBehavior {
      * @return The current path
      */
     default Optional<IPath> getPath() {
-        return Optional.ofNullable(getCurrent()).map(IPathExecutor::getPath);
+        return Optional.ofNullable(getCurrentPath()).map(IPathExecutor::getPath);
     }
 
     /**
@@ -121,12 +121,12 @@ public interface IPathingBehavior extends IBehavior {
     /**
      * @return The current path executor
      */
-    IPathExecutor getCurrent();
+    IPathExecutor getCurrentPath();
 
     /**
      * Returns the next path executor, created when planning ahead.
      *
      * @return The next path executor
      */
-    IPathExecutor getNext();
+    IPathExecutor getNextPlannedPath();
 }

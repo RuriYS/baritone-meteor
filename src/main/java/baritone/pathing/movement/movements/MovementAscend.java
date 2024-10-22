@@ -77,9 +77,9 @@ public class MovementAscend extends Movement {
             }
             boolean foundPlaceOption = false;
             for (int i = 0; i < 5; i++) {
-                int againstX = destX + HORIZONTALS_BUT_ALSO_DOWN_____SO_EVERY_DIRECTION_EXCEPT_UP[i].getStepX();
-                int againstY = y + HORIZONTALS_BUT_ALSO_DOWN_____SO_EVERY_DIRECTION_EXCEPT_UP[i].getStepY();
-                int againstZ = destZ + HORIZONTALS_BUT_ALSO_DOWN_____SO_EVERY_DIRECTION_EXCEPT_UP[i].getStepZ();
+                int againstX = destX + VALID_DIRECTIONS[i].getStepX();
+                int againstY = y + VALID_DIRECTIONS[i].getStepY();
+                int againstZ = destZ + VALID_DIRECTIONS[i].getStepZ();
                 if (againstX == x && againstZ == z) { // we might be able to backplace now, but it doesn't matter because it will have been broken by the time we'd need to use it
                     continue;
                 }
@@ -171,8 +171,8 @@ public class MovementAscend extends Movement {
             return state.setStatus(MovementStatus.SUCCESS);
         }
 
-        BlockState jumpingOnto = BlockStateInterface.get(ctx, positionToPlace);
-        if (!MovementHelper.canWalkOn(ctx, positionToPlace, jumpingOnto)) {
+        BlockState jumpingOnto = BlockStateInterface.get(ctx, blockToPlace);
+        if (!MovementHelper.canWalkOn(ctx, blockToPlace, jumpingOnto)) {
             ticksWithoutPlacement++;
             if (MovementHelper.attemptToPlaceABlock(state, baritone, dest.below(), false, true) == PlaceResult.READY_TO_PLACE) {
                 state.setInput(Input.SNEAK, true);

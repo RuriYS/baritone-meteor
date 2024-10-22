@@ -59,8 +59,8 @@ public final class InputOverrideHandler extends Behavior implements IInputOverri
      * @return Whether or not it is being forced down
      */
     @Override
-    public final boolean isInputForcedDown(Input input) {
-        return input == null ? false : this.inputForceStateMap.getOrDefault(input, false);
+    public boolean isInputForcedDown(Input input) {
+        return input != null && this.inputForceStateMap.getOrDefault(input, false);
     }
 
     /**
@@ -70,20 +70,20 @@ public final class InputOverrideHandler extends Behavior implements IInputOverri
      * @param forced Whether or not the state is being forced
      */
     @Override
-    public final void setInputForceState(Input input, boolean forced) {
+    public void setInputForceState(Input input, boolean forced) {
         this.inputForceStateMap.put(input, forced);
     }
 
     /**
-     * Clears the override state for all keys
+     * Clears the overrideCost state for all keys
      */
     @Override
-    public final void clearAllKeys() {
+    public void clearAllKeys() {
         this.inputForceStateMap.clear();
     }
 
     @Override
-    public final void onTick(TickEvent event) {
+    public void onTick(TickEvent event) {
         if (event.getType() == TickEvent.Type.OUT) {
             return;
         }
@@ -98,15 +98,17 @@ public final class InputOverrideHandler extends Behavior implements IInputOverri
                 ctx.player().input = new PlayerMovementInput(this);
             }
         } else {
-            if (ctx.player().input.getClass() == PlayerMovementInput.class) { // allow other movement inputs that aren't this one, e.g. for a freecam
+            if (ctx.player().input.getClass() == PlayerMovementInput.class) {
+                // allow other movement inputs that aren't this one, e.g. for a freecam
+                // only set it if it was previously incorrect
+                // gotta do it this way, or else it constantly thinks you're beginning a double tap W sprint lol
                 ctx.player().input = new KeyboardInput(ctx.minecraft().options);
             }
         }
-        // only set it if it was previously incorrect
-        // gotta do it this way, or else it constantly thinks you're beginning a double tap W sprint lol
     }
 
     private boolean inControl() {
+        if (Baritone.settings().freeControl.value) return false;
         for (Input input : new Input[]{Input.MOVE_FORWARD, Input.MOVE_BACK, Input.MOVE_LEFT, Input.MOVE_RIGHT, Input.SNEAK, Input.JUMP}) {
             if (isInputForcedDown(input)) {
                 return true;

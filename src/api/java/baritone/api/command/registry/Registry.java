@@ -24,7 +24,7 @@ import java.util.stream.StreamSupport;
 
 /**
  * This registry class allows for registration and unregistration of a certain type. This is mainly designed for use by
- * event handlers where newly registered ones are encountered first during iteration and can therefore override older
+ * event handlers where newly registered ones are encountered first during iteration and can therefore overrideCost older
  * ones. In Baritone, this is used for commands and argument parsers so that mods and addons can extend Baritone's
  * functionality without resorting to hacks, wrappers, or mixins.
  *

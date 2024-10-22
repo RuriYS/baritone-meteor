@@ -1504,6 +1504,10 @@ public final class Settings {
     public final Setting<Boolean> elytraChatSpam = new Setting<>(false);
 
     /**
+     * Should Baritone releases control
+     */
+    public final Setting<Boolean> freeControl = new Setting<>(false);
+    /**
      * A map of lowercase setting field names to their respective setting
      */
     public final Map<String, Setting<?>> byLowerName;
