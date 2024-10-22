@@ -26,75 +26,47 @@ import java.util.HashSet;
 import java.util.List;
 
 /**
+ * Represents a calculated path consisting of a series of movements between positions.
+ * A path is an ordered sequence of movements that lead from a starting position to a goal.
+ *
  * @author leijurv, Brady
  */
 public interface IPath {
-
     /**
-     * Ordered list of movements to carry out.
-     * movements.get(i).getSrc() should equal positions.get(i)
-     * movements.get(i).getDest() should equal positions.get(i+1)
-     * movements.size() should equal positions.size()-1
-     *
-     * @return All of the movements to carry out
+     * Returns the sequence of movements that make up this path.
+     * @return Ordered list of movements where each movement connects consecutive positions
      */
     List<IMovement> movements();
 
     /**
-     * All positions along the way.
-     * Should begin with the same as getSrc and end with the same as getDest
-     *
-     * @return All of the positions along this path
+     * Returns all positions along this path.
+     * @return List of positions, starting with source and ending with destination
      */
     List<BetterBlockPos> positions();
 
     /**
-     * This path is actually going to be executed in the world. Do whatever additional processing is required.
-     * (as opposed to Path objects that are just constructed every frame for rendering)
-     *
-     * @return The result of path post processing
-     */
-    default IPath postProcess() {
-        throw new UnsupportedOperationException();
-    }
-
-    /**
-     * Returns the number of positions in this path. Equivalent to {@code positions().size()}.
-     *
-     * @return Number of positions in this path
-     */
-    default int length() {
-        return positions().size();
-    }
-
-    /**
-     * @return The goal that this path was calculated towards
+     * Gets the goal this path was calculated towards.
+     * @return The target goal
      */
     Goal getGoal();
 
     /**
-     * Returns the number of nodes that were considered during calculation before
-     * this path was found.
-     *
-     * @return The number of nodes that were considered before finding this path
+     * Gets the number of nodes evaluated during pathfinding.
+     * @return Count of nodes considered
      */
     int getNumNodesConsidered();
 
     /**
-     * Returns the start position of this path. This is the first element in the
-     * {@link List} that is returned by {@link IPath#positions()}.
-     *
-     * @return The start position of this path
+     * Returns the starting position.
+     * @return First position in the path
      */
     default BetterBlockPos getSrc() {
         return positions().get(0);
     }
 
     /**
-     * Returns the end position of this path. This is the last element in the
-     * {@link List} that is returned by {@link IPath#positions()}.
-     *
-     * @return The end position of this path.
+     * Returns the ending position.
+     * @return Last position in the path
      */
     default BetterBlockPos getDest() {
         List<BetterBlockPos> pos = positions();
@@ -102,14 +74,20 @@ public interface IPath {
     }
 
     /**
-     * Returns the estimated number of ticks to complete the path from the given node index.
-     *
-     * @param pathPosition The index of the node we're calculating from
-     * @return The estimated number of ticks remaining frm the given position
+     * Returns total path length.
+     * @return Number of positions
+     */
+    default int length() {
+        return positions().size();
+    }
+
+    /**
+     * Calculates remaining ticks from given position.
+     * @param pathPosition Index in path to calculate from
+     * @return Estimated ticks remaining
      */
     default double ticksRemainingFrom(int pathPosition) {
         double sum = 0;
-        //this is fast because we aren't requesting recalculation, it's just cached
         List<IMovement> movements = movements();
         for (int i = pathPosition; i < movements.size(); i++) {
             sum += movements.get(i).getCost();
@@ -118,38 +96,42 @@ public interface IPath {
     }
 
     /**
-     * Cuts off this path at the loaded chunk border, and returns the resulting path. Default
-     * implementation just returns this path, without the intended functionality.
-     * <p>
-     * The argument is supposed to be a BlockStateInterface LOL LOL LOL LOL LOL
-     *
-     * @param bsi The block state lookup, highly cursed
-     * @return The result of this cut-off operation
+     * Performs post-processing for path execution.
+     * @return Processed path
+     * @throws UnsupportedOperationException if not implemented
+     */
+    default IPath postProcess() {
+        throw new UnsupportedOperationException();
+    }
+
+    /**
+     * Truncates path at chunk boundaries.
+     * @param bsi Block state interface for chunk checking
+     * @return Truncated path
+     * @throws UnsupportedOperationException if not implemented
      */
     default IPath cutoffAtLoadedChunks(Object bsi) {
         throw new UnsupportedOperationException();
     }
 
     /**
-     * Cuts off this path using the min length and cutoff factor settings, and returns the resulting path.
-     * Default implementation just returns this path, without the intended functionality.
-     *
-     * @param destination The end goal of this path
-     * @return The result of this cut-off operation
-     * @see Settings#pathCutoffMinimumLength
-     * @see Settings#pathCutoffFactor
+     * Applies static cutoff based on settings.
+     * @param destination Goal to measure against
+     * @return Modified path
+     * @throws UnsupportedOperationException if not implemented
      */
     default IPath staticCutoff(Goal destination) {
         throw new UnsupportedOperationException();
     }
 
-
     /**
-     * Performs a series of checks to ensure that the assembly of the path went as expected.
+     * Validates path integrity.
+     * @throws IllegalStateException if validation fails
      */
     default void sanityCheck() {
         List<BetterBlockPos> path = positions();
         List<IMovement> movements = movements();
+
         if (!getSrc().equals(path.get(0))) {
             throw new IllegalStateException("Start node does not equal first path element");
         }
@@ -159,11 +141,13 @@ public interface IPath {
         if (path.size() != movements.size() + 1) {
             throw new IllegalStateException("Size of path array is unexpected");
         }
+
         HashSet<BetterBlockPos> seenSoFar = new HashSet<>();
         for (int i = 0; i < path.size() - 1; i++) {
             BetterBlockPos src = path.get(i);
             BetterBlockPos dest = path.get(i + 1);
             IMovement movement = movements.get(i);
+
             if (!src.equals(movement.getSrc())) {
                 throw new IllegalStateException("Path source is not equal to the movement source");
             }

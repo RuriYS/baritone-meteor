@@ -23,6 +23,10 @@ import baritone.api.process.PathingCommand;
 import java.util.Optional;
 
 /**
+ * Manages control flow and priority between different pathing processes.
+ * Handles registration and tracking of active processes, maintaining the execution order
+ * and state of pathfinding commands within the Baritone system.
+ *
  * @author leijurv
  */
 public interface IPathingControlManager {

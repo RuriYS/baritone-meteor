@@ -41,13 +41,13 @@ import java.util.*;
 /**
  * Executes a pre-calculated path by managing movement states, handling path validation,
  * and coordinating with the broader pathing system.
- * -------------------------------------------------------------------------------------
- * This executor is responsible for:
- * 1. Tracking the current position along the path
- * 2. Validating path integrity and handling deviations
- * 3. Managing movement states and transitions
- * 4. Coordinating with the sprint controller
- * 5. Handling path splicing and optimization
+ * <ol>
+ * <li>Tracking the current position along the path</li>
+ * <li>Validating path integrity and handling deviations</li>
+ * <li>Managing movement states and transitions</li>
+ * <li>Coordinating with the sprint controller</li>
+ * <li>Handling path splicing and optimization</li>
+ * </ol>
  *
  * @author leijurv (original)
  */
