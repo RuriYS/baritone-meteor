@@ -39,13 +39,11 @@ import net.minecraft.world.phys.Vec3;
 import java.util.*;
 
 /**
- * Executes a pre-calculated path by managing actions states, handling path validation,
- * and coordinating with the broader pathing system.
+ * Executes a pre-calculated path.
  * <ol>
  * <li>Tracking the current position along the path</li>
  * <li>Validating path integrity and handling deviations</li>
  * <li>Managing actions states and transitions</li>
- * <li>Coordinating with the sprint controller</li>
  * <li>Handling path splicing and optimization</li>
  * </ol>
  *
@@ -73,10 +71,12 @@ public class PathExecutor implements IPathExecutor, Helper {
     private boolean sprintNextTick;
 
     // Block modification tracking
-    private boolean recalcBP = true;
+    private boolean calculateBlockStates = true;
     private final Set<BlockPos> toBreak = new HashSet<>();
     private final Set<BlockPos> toPlace = new HashSet<>();
     private final Set<BlockPos> toWalkInto = new HashSet<>();
+
+    private Movement previousMovement;
 
     /**
      * Creates a new path executor for the given path.
@@ -104,12 +104,13 @@ public class PathExecutor implements IPathExecutor, Helper {
     /**
      * Updates the path execution state for the current tick.
      *
-     * @return true if the current actions is complete or cancellable, false otherwise
+     * @return true if the current actions are complete or cancellable, false otherwise
      */
     public boolean onTick() {
         if (pathPosition == path.length() - 1) {
             pathPosition++;
         }
+
         if (pathPosition >= path.length()) {
             return true;
         }
@@ -117,34 +118,31 @@ public class PathExecutor implements IPathExecutor, Helper {
         Movement movement = (Movement) path.movements().get(pathPosition);
         BetterBlockPos playerPos = ctx.playerFeet();
 
-        // Validate position
-        if (!Baritone.settings().freeControl.value && !isPositionValid(movement, playerPos)) {
-            logDebug("Invalid pos, pos: " + playerPos);
-            if (invalidPosHandled(playerPos)) {
-                return false;
+        if (previousMovement != null && !previousMovement.getClass().getSimpleName().equals(movement.getClass().getSimpleName())) {
+            logDebug("Movement: " + movement.getClass().getSimpleName());
+        }
+
+        this.previousMovement = movement;
+
+        if (Baritone.settings().freeControl.value) {
+            // Handle freeControl state
+            BlockPos target = movement.getDest();
+
+            double pathDistFromPlayer = Math.sqrt(
+                    Math.pow(playerPos.getX() - target.getX(), 2) +
+                            Math.pow(playerPos.getZ() - target.getZ(), 2)
+            );
+            // logDebug("Distance from path: " + pathDistFromPlayer);
+            if (pathDistFromPlayer < Baritone.settings().freeControlMaxDistance.value) {
+                pathPosition++;
+            } else if (pathDistFromPlayer > Baritone.settings().freeControlMaxDistance.value + 1.0) {
+                logDebug("Too far from path end, recalculating...");
+                cancel();
             }
+            return true;
         }
 
-        // Path proximity check
-        Tuple<Double, BlockPos> status = closestPathPos(path);
-        if (pathProximitHandled(status)) {
-            return false;
-        }
-
-        // Update block states
-        if (recalcBP) {
-            updateBlockStates();
-        }
-
-        // Check loaded chunks
-        if (pathPosition < path.movements().size() - 1) {
-            IMovement next = path.movements().get(pathPosition + 1);
-            if (!behavior.baritone.bsi.worldContainsLoadedChunk(next.getDest().x, next.getDest().z)) {
-                logDebug("Pausing since destination is at edge of loaded chunks");
-                clearKeys();
-                return true;
-            }
-        }
+        // Handle normal pathing
 
         // Movement state handling
         boolean canCancel = movement.safeToCancel();
@@ -154,11 +152,26 @@ public class PathExecutor implements IPathExecutor, Helper {
             return true;
         }
 
+        if (!isPositionValid(movement, playerPos)) {
+            logDebug("Invalid pos: " + playerPos.getX() + ", " + playerPos.getY() + ", " + playerPos.getZ());
+            if (handleInvalidPosition(playerPos)) {
+                return false;
+            }
+        }
+
+        // Path proximity check
+        Tuple<Double, BlockPos> status = closestPathPos(path);
+        if (handlePathProximity(status)) {
+            return false;
+        }
+
+        // Update block states
+        if (calculateBlockStates) {
+            updateBlockStates();
+        }
+
         // Execute actions
         MovementStatus movementStatus = movement.update();
-
-        // logDebug("Movement status: " + movementStatus.toString());
-        // logDebug("Current actions: " + actions);
 
         if (movementStatus == MovementStatus.UNREACHABLE || movementStatus == MovementStatus.FAILED) {
             logDebug("Movement returns status " + movementStatus);
@@ -186,6 +199,16 @@ public class PathExecutor implements IPathExecutor, Helper {
             return true;
         }
 
+        // Check loaded chunks
+        if (pathPosition < path.movements().size() - 1) {
+            IMovement next = path.movements().get(pathPosition + 1);
+            if (!behavior.baritone.bsi.worldContainsLoadedChunk(next.getDest().x, next.getDest().z)) {
+                logDebug("Pausing since destination is at edge of loaded chunks");
+                clearKeys();
+                return true;
+            }
+        }
+
         return canCancel;
     }
 
@@ -206,7 +229,7 @@ public class PathExecutor implements IPathExecutor, Helper {
         return false;
     }
 
-    private boolean invalidPosHandled(BetterBlockPos playerPos) {
+    private boolean handleInvalidPosition(BetterBlockPos playerPos) {
         // Check previous positions
         for (int i = 0; i < pathPosition && i < path.length(); i++) {
             if (((Movement) path.movements().get(i)).getValidPositions().contains(playerPos)) {
@@ -237,7 +260,7 @@ public class PathExecutor implements IPathExecutor, Helper {
         return false;
     }
 
-    private boolean pathProximitHandled(Tuple<Double, BlockPos> status) {
+    private boolean handlePathProximity(Tuple<Double, BlockPos> status) {
         if (possiblyOffPath(status, MAX_DIST_FROM_PATH)) {
             ticksAway++;
             if (ticksAway > MAX_TICKS_AWAY) {
@@ -276,7 +299,7 @@ public class PathExecutor implements IPathExecutor, Helper {
         toBreak.addAll(newBreak);
         toPlace.addAll(newPlace);
         toWalkInto.addAll(newWalkInto);
-        recalcBP = false;
+        calculateBlockStates = false;
     }
 
     private boolean validateMovementCosts(Movement movement, boolean canCancel) {
@@ -369,7 +392,7 @@ public class PathExecutor implements IPathExecutor, Helper {
     private boolean possiblyOffPath(Tuple<Double, BlockPos> status, double leniency) {
         double distanceFromPath = status.getA();
         if (Baritone.settings().freeControl.value) {
-            leniency = 30.0; // Allow much more distance when in free control TODO config for this
+            leniency = 30.0;
         }
         if (distanceFromPath > leniency) {
             // when we're midair in the middle of a fall, we're very far from both the beginning and the end, but we aren't actually off path

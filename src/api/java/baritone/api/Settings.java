@@ -1507,6 +1507,13 @@ public final class Settings {
      * Should Baritone releases control
      */
     public final Setting<Boolean> freeControl = new Setting<>(false);
+
+    /**
+     * Distance from path before recalculating when freeControl is enabled
+     * It's also used to validate current path
+     */
+    public final Setting<Double> freeControlMaxDistance = new Setting<>(2.0);
+
     /**
      * A map of lowercase setting field names to their respective setting
      */
