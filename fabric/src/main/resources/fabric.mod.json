@@ -2,7 +2,6 @@
   "schemaVersion": 1,
   "id": "baritone-meteor",
   "version": "${version}",
-
   "name": "Baritone",
   "description": "Google Maps for Blockgame",
   "authors": [
